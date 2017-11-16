@@ -7,25 +7,43 @@ using Wooplex.Panels;
 
 public class InputHandler : Singleton<InputHandler>
 {
-    //public CanvasScaleObserver ScaleObserver;
-	public event Action OnWave;
-
+    public event Action OnTouchToSceen;
     private Touch[] touches;
 
 	private void LateUpdate()
 	{
 		touches = Input.touches;
 
-        if (touches.Length == 1)
+        if (touches != null && touches.Length == 1)
         {
-            OnSingleTouch();
+            if (touches[0].phase == TouchPhase.Began)
+            {
+                OnBeganPhase();
+            }
+            else if (touches[0].phase == TouchPhase.Moved)
+            {
+                OnMovedPhase();
+            }
+            else if (touches[0].phase == TouchPhase.Ended)
+            {
+                OnEndedPhase();
+            }
         }
 	}
 
-    void OnSingleTouch()
+    void OnBeganPhase()
     {
-        OnWave.Invoke()
+        OnTouchToSceen.InvokeSafely();
     }
 
+    void OnMovedPhase()
+    {
+
+    }
+
+    void OnEndedPhase()
+    {
+
+    }
 
 }

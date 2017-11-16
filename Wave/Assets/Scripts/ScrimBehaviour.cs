@@ -6,32 +6,47 @@ using Wooplex.Panels;
 
 public class ScrimBehaviour : MonoBehaviour {
 
-    [Header("--Self References--------------------------------------------------------------------------------------")]
-    public RectTransform ObjRectTransform;
     [Header("--Instantiation--------------------------------------------------------------------------------------")]
-    public GameObject ShapePrefab;
-    [Header("--Shapes--------------------------------------------------------------------------------------")]
-    private List<ShapeBehaviour> shapes = new List<ShapeBehaviour>();
-    [Header("--Wave----------------------------------------------------------------------------------------")]
-    [SerializeField] private Image WaveImage;
-    [SerializeField] private AnimationCurve waveCurve;
-    private IEnumerator waveIenumerator;
-    private RectTransform waveRectTransform;
-    private bool readyToTweenScale;
+    [SerializeField] private Transform enemyContainer;
+    [SerializeField] private Transform creatorContainer;
+    [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject waveCreatorPrefab;
 
 
-    private string partOfPath = "Prefabs/";
+    private void Awake()
+    {
+        
+    }
 
     private void Start()
     {
-        InputHandler.Instance.OnWave += OnWave;
-        waveRectTransform = WaveImage.GetComponent<RectTransform>();
+        InstantiatePrefabs(1, 1);
     }
 
-    private void OnGUI()
+    private void InstantiatePrefabs(int numCreator, int numEnemy)
     {
-        GUILayout.TextArea("OnWave");
+        InstantiateCreator(numCreator);
+        InstantiateEnemy(numEnemy);
     }
+
+    private void InstantiateCreator(int numCreator)
+    {
+        for (int i = 0; i < numCreator; i++)
+        {
+            GameObject go = Instantiate(waveCreatorPrefab, creatorContainer);
+            
+        }
+    }
+
+    private void InstantiateEnemy(int numEnemy)
+    {
+        for (int i = 0; i < numEnemy; i++)
+        {
+            GameObject go = Instantiate(enemyPrefab, enemyContainer);
+        }
+    }
+
+
 
     private void OnWave()
     {
@@ -67,23 +82,23 @@ public class ScrimBehaviour : MonoBehaviour {
         //screenWaveIenumerator = null;
     }
 
-        public void InstantiateShapesFromPrefab(string textureName)
-    {
-        string prefabPath = partOfPath + textureName;
-        GameObject letterPrefab = (GameObject)Resources.Load(prefabPath);
-        int shapesCount = letterPrefab.transform.childCount;
+    //public void InstantiateShapesFromPrefab(string textureName)
+    //{
+    //    string prefabPath = partOfPath + textureName;
+    //    GameObject letterPrefab = (GameObject)Resources.Load(prefabPath);
+    //    int shapesCount = letterPrefab.transform.childCount;
 
-        for (int i = 0; i < shapesCount; i++)
-        {
-            ShapeBehaviour newShape = InstantiateShape(letterPrefab.transform.GetChild(i).gameObject);
-        }
-    }
+    //    for (int i = 0; i < shapesCount; i++)
+    //    {
+    //        ShapeBehaviour newShape = InstantiateShape(letterPrefab.transform.GetChild(i).gameObject);
+    //    }
+    //}
 
-        public ShapeBehaviour InstantiateShape(GameObject sourceObject)
-    {
-        ShapeBehaviour newShape = Instantiate(sourceObject, ObjRectTransform).GetComponent<ShapeBehaviour>();
-        shapes.Add(newShape);
-        return newShape;
-    }
+    //public ShapeBehaviour InstantiateShape(GameObject sourceObject)
+    //{
+    //    ShapeBehaviour newShape = Instantiate(sourceObject, ObjRectTransform).GetComponent<ShapeBehaviour>();
+    //    shapes.Add(newShape);
+    //    return newShape;
+    //}
 
 }
