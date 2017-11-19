@@ -7,7 +7,7 @@ using Wooplex.Panels;
 
 public class InputHandler : Singleton<InputHandler>
 {
-    public event Action OnTouchToSceen;
+    //public event Action OnTouchToSceen;
     private Touch[] touches;
 
 	private void LateUpdate()
