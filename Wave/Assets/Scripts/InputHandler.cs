@@ -33,7 +33,7 @@ public class InputHandler : Singleton<InputHandler>
 
     void OnBeganPhase()
     {
-        OnTouchToSceen.InvokeSafely();
+        //OnTouchToSceen.InvokeSafely();
     }
 
     void OnMovedPhase()

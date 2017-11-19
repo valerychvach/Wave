@@ -1,10 +1,15 @@
 fileFormatVersion: 2
 guid: d56592824f75f174dbfe7d94d1c087c3
-timeCreated: 1510862262
+timeCreated: 1510922473
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - wavePrefab: {fileID: 1644105085085532, guid: 2ece509e99193294eaec50fdc6b0fed9,
+      type: 2}
+  - waveImage: {fileID: 114021143947844574, guid: 2ece509e99193294eaec50fdc6b0fed9,
+      type: 2}
+  - wavePrefabContainer: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

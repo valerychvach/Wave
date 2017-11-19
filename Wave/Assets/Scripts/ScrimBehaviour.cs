@@ -9,41 +9,77 @@ public class ScrimBehaviour : MonoBehaviour {
     [Header("--Instantiation--------------------------------------------------------------------------------------")]
     [SerializeField] private Transform enemyContainer;
     [SerializeField] private Transform creatorContainer;
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private GameObject waveCreatorPrefab;
+    
+    // Prefabs
+    private string pathToPrefab = "Prefabs/";
+    private Dictionary<Prefabs, string> pathToPrefabsDictionary;
+    private Dictionary<Prefabs, GameObject> gameObjects;
 
+    enum Prefabs
+    {
+        CreatorRed,
+        CreatorGreen,
+        CreatorBlue,
+        EnemyRed,
+        EnemyGreen,
+        EnemyBlue
+    }
 
     private void Awake()
     {
-        
+        PreparePathToPrefabDictionary();
+        PrepareGameObjectsDictionary();
     }
 
     private void Start()
     {
-        InstantiatePrefabs(1, 1);
+        InstantiatePrefabs();
     }
 
-    private void InstantiatePrefabs(int numCreator, int numEnemy)
+    private void PreparePathToPrefabDictionary()
     {
-        InstantiateCreator(numCreator);
-        InstantiateEnemy(numEnemy);
+        pathToPrefabsDictionary = new Dictionary<Prefabs, string>();
+        pathToPrefabsDictionary.Add(Prefabs.CreatorBlue, "WaveCreatorBlue");
+        pathToPrefabsDictionary.Add(Prefabs.CreatorGreen, "WaveCreatorGreen");
+        pathToPrefabsDictionary.Add(Prefabs.CreatorRed, "WaveCreatorRed");
+        pathToPrefabsDictionary.Add(Prefabs.EnemyBlue, "EnemyBlue");
+        pathToPrefabsDictionary.Add(Prefabs.EnemyGreen, "EnemyGreen");
+        pathToPrefabsDictionary.Add(Prefabs.EnemyRed, "EnemyRed");
     }
 
-    private void InstantiateCreator(int numCreator)
+    private void PrepareGameObjectsDictionary()
     {
-        for (int i = 0; i < numCreator; i++)
+        gameObjects = new Dictionary<Prefabs, GameObject>
         {
-            GameObject go = Instantiate(waveCreatorPrefab, creatorContainer);
-            
-        }
+            { Prefabs.CreatorBlue, (GameObject)Resources.Load(pathToPrefab + pathToPrefabsDictionary[Prefabs.CreatorBlue]) },
+            { Prefabs.CreatorGreen, (GameObject)Resources.Load(pathToPrefab + pathToPrefabsDictionary[Prefabs.CreatorGreen]) },
+            { Prefabs.CreatorRed, (GameObject)Resources.Load(pathToPrefab + pathToPrefabsDictionary[Prefabs.CreatorRed]) },
+            { Prefabs.EnemyBlue, (GameObject)Resources.Load(pathToPrefab + pathToPrefabsDictionary[Prefabs.EnemyBlue]) },
+            { Prefabs.EnemyGreen, (GameObject)Resources.Load(pathToPrefab + pathToPrefabsDictionary[Prefabs.EnemyGreen]) },
+            { Prefabs.EnemyRed, (GameObject)Resources.Load(pathToPrefab + pathToPrefabsDictionary[Prefabs.EnemyRed]) }
+        };
     }
 
-    private void InstantiateEnemy(int numEnemy)
+    private void InstantiatePrefabs()
     {
-        for (int i = 0; i < numEnemy; i++)
-        {
-            GameObject go = Instantiate(enemyPrefab, enemyContainer);
-        }
+        InstantiateCreator();
+        InstantiateEnemy();
+    }
+
+    private void InstantiateCreator()
+    {
+        // All levels data located in LevelManager
+        Instantiate(gameObjects[Prefabs.CreatorBlue], creatorContainer);
+        Instantiate(gameObjects[Prefabs.CreatorGreen], creatorContainer);
+        Instantiate(gameObjects[Prefabs.CreatorRed], creatorContainer);
+    }
+
+    private void InstantiateEnemy()
+    {
+        // All levels data located in LevelManager
+        Instantiate(gameObjects[Prefabs.EnemyBlue], enemyContainer);
+        Instantiate(gameObjects[Prefabs.EnemyGreen], enemyContainer);
+        Instantiate(gameObjects[Prefabs.EnemyRed], enemyContainer);
     }
 
 
