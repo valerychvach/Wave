@@ -1,14 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class LevelManager : Singleton<LevelManager>
 {
-    public LevelData LevelData;
+    public int NumOfEnemyOnScene = 0;
+    public int NumOfDestroedEnemyOnScene = 0;
+    public event Action OnLevelEnded;
 
-    private void Awake()
+    private void LateUpdate()
     {
-        //LevelData = new LevelData(1);
+        if (NumOfEnemyOnScene != 0 && NumOfEnemyOnScene == NumOfDestroedEnemyOnScene)
+        {
+            OnLevelEnded.InvokeSafely();
+        }
     }
 
 

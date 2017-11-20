@@ -14,6 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (readyToDestroy)
         {
             Destroy(this.gameObject);
+            LevelManager.Instance.NumOfDestroedEnemyOnScene += 1;
         }
     }
 

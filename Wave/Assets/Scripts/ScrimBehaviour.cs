@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Wooplex.Panels;
+using UnityEngine.SceneManagement;
 
 public class ScrimBehaviour : MonoBehaviour {
 
@@ -14,6 +15,10 @@ public class ScrimBehaviour : MonoBehaviour {
     private string pathToPrefab = "Prefabs/";
     private Dictionary<Prefabs, string> pathToPrefabsDictionary;
     private Dictionary<Prefabs, GameObject> gameObjects;
+    private List<GameObject> enemyList = new List<GameObject>();
+
+    // Menu panel
+    [SerializeField] private Transform menuPanel;
 
     enum Prefabs
     {
@@ -27,6 +32,7 @@ public class ScrimBehaviour : MonoBehaviour {
 
     private void Awake()
     {
+        LevelManager.Instance.OnLevelEnded += OnLevelEnded;
         PreparePathToPrefabDictionary();
         PrepareGameObjectsDictionary();
     }
@@ -77,64 +83,22 @@ public class ScrimBehaviour : MonoBehaviour {
     private void InstantiateEnemy()
     {
         // All levels data located in LevelManager
-        Instantiate(gameObjects[Prefabs.EnemyBlue], enemyContainer);
-        Instantiate(gameObjects[Prefabs.EnemyGreen], enemyContainer);
-        Instantiate(gameObjects[Prefabs.EnemyRed], enemyContainer);
+        enemyList.Add(Instantiate(gameObjects[Prefabs.EnemyBlue], enemyContainer));
+        enemyList.Add(Instantiate(gameObjects[Prefabs.EnemyGreen], enemyContainer));
+        enemyList.Add(Instantiate(gameObjects[Prefabs.EnemyRed], enemyContainer));
+
+        LevelManager.Instance.NumOfEnemyOnScene = enemyList.Count;
     }
 
-
-
-    private void OnWave()
+    private void OnLevelEnded()
     {
-        //waveRectTransform.gameObject.SetActive(true);
-
-        //Vector2 startSize = new Vector2(0f, 0f);
-        ////Color startColor = new Color(30f / 255f, 30f / 255f, 30f / 255f, 0f);
-        ////Color curentColor = startColor;
-        //Vector2 wavePosition = Input.;
-        ////        wavePosition.z = 0;
-        //waveRectTransform.position = wavePosition;
-        //waveRectTransform.sizeDelta = startSize;
-        ////WaveImage.color = startColor;
-
-        //Vector2 targetSize = Vector2.zero;
-        //float targetRadius = 0;
-
-
-
-        //targetSize = (Vector2.one * 2 * targetRadius) / canvasScaleMultiplier.y;
-
-        //float progress = 0;
-        //while (progress < 1)
-        //{
-        //    float evaluatedValue = WaveAlphaCurve.Evaluate(progress);
-        //    curentColor.a = evaluatedValue;
-        //    ScreenWaveImage.color = curentColor;
-        //    screenWaveRectTransform.sizeDelta = Vector2.Lerp(startSize, targetSize, progress);
-        //    progress += 0.04f;
-        //    yield return null;
-        //}
-        //screenWaveRectTransform.gameObject.SetActive(false);
-        //screenWaveIenumerator = null;
+        menuPanel.gameObject.SetActive(true);
     }
 
-    //public void InstantiateShapesFromPrefab(string textureName)
-    //{
-    //    string prefabPath = partOfPath + textureName;
-    //    GameObject letterPrefab = (GameObject)Resources.Load(prefabPath);
-    //    int shapesCount = letterPrefab.transform.childCount;
-
-    //    for (int i = 0; i < shapesCount; i++)
-    //    {
-    //        ShapeBehaviour newShape = InstantiateShape(letterPrefab.transform.GetChild(i).gameObject);
-    //    }
-    //}
-
-    //public ShapeBehaviour InstantiateShape(GameObject sourceObject)
-    //{
-    //    ShapeBehaviour newShape = Instantiate(sourceObject, ObjRectTransform).GetComponent<ShapeBehaviour>();
-    //    shapes.Add(newShape);
-    //    return newShape;
-    //}
+    public void RestartLevel()
+    {
+        menuPanel.gameObject.SetActive(false);
+        InstantiateEnemy();
+    }
 
 }
